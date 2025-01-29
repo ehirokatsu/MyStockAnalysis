@@ -23,10 +23,8 @@ def check_condition(close_price, moving_avg):
     """条件をチェック"""
     return float(close_price) < float(moving_avg)
 
-def main(symbol):
-    CHECK_DAYS = 10  # 条件を連続して満たす必要のある日数
-    MOVING_AVERAGE_DAYS = 50  # 移動平均線の期間
-
+def analyze_stock(symbol, check_days=10, moving_avg_days=50):
+    """1つの銘柄のデータを取得・分析"""
     # 現在の日付を取得
     end_date = dt.datetime.now()
     start_date = end_date - dt.timedelta(days=100)
@@ -41,7 +39,7 @@ def main(symbol):
         return
 
     # 50日移動平均線を計算
-    stock_data['MA50'] = calculate_moving_average(stock_data, MOVING_AVERAGE_DAYS)
+    stock_data['MA50'] = calculate_moving_average(stock_data, moving_avg_days)
 
     # 銘柄名を取得
     try:
@@ -53,7 +51,7 @@ def main(symbol):
 
     # 過去10日間の条件チェック
     is_condition_met = True
-    for i in range(1, CHECK_DAYS + 1):
+    for i in range(1, check_days + 1):
         try:
             close_price = stock_data['Close'].iloc[-i]
             moving_avg = stock_data['MA50'].iloc[-i]
@@ -77,12 +75,18 @@ def main(symbol):
             break
 
     if is_condition_met:
-        message = f"{stock_name} ({symbol}) の株価が50日移動平均線を{CHECK_DAYS}日連続で下回りました！"
-        send_notification(message)
+        message = f"{stock_name} ({symbol}) の株価が50日移動平均線を{check_days}日連続で下回りました！"
+        # send_notification(message)
+        send_imessage("e.hirokatsu@icloud.com", message)
         print(message)
     else:
         print(f"{stock_name} の条件はまだ満たされていません。")
 
+def main(symbols):
+    """複数の銘柄を処理"""
+    for symbol in symbols:
+        analyze_stock(symbol)
+
 if __name__ == "__main__":
-    SYMBOL = "9433.T"  # ここに銘柄コードを指定
-    main(SYMBOL)
+    SYMBOLS = ["2169.T", "7820.T"]  # ここに複数の銘柄コードを指定
+    main(SYMBOLS)
