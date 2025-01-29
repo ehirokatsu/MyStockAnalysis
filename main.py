@@ -15,10 +15,6 @@ def calculate_moving_average(data, days):
     """移動平均線を計算"""
     return data['Close'].rolling(window=days).mean()
 
-def send_notification(message):
-    """Macの通知センターに通知を送る"""
-    os.system(f"osascript -e 'display notification \"{message}\" with title \"株価通知\"'")
-
 def check_condition(close_price, moving_avg):
     """条件をチェック"""
     return float(close_price) < float(moving_avg)
@@ -76,7 +72,6 @@ def analyze_stock(symbol, check_days=10, moving_avg_days=50):
 
     if is_condition_met:
         message = f"{stock_name} ({symbol}) の株価が50日移動平均線を{check_days}日連続で下回りました！"
-        # send_notification(message)
         send_imessage("e.hirokatsu@icloud.com", message)
         print(message)
     else:
@@ -90,3 +85,6 @@ def main(symbols):
 if __name__ == "__main__":
     SYMBOLS = ["2169.T", "7820.T"]  # ここに複数の銘柄コードを指定
     main(SYMBOLS)
+
+
+# ログ出力　銘柄、移動平均日数指定の外部ファイル化
