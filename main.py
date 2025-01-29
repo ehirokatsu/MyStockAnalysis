@@ -94,7 +94,7 @@ def main():
 
     # 条件が満たされていれば通知
     if is_condition_met:
-        send_notification(f"KDDIの株価が50日移動平均線を{CHECK_DAYS}日連続で下回りました！")
+        # send_notification(f"KDDIの株価が50日移動平均線を{CHECK_DAYS}日連続で下回りました！")
         print(f"KDDIの株価が50日移動平均線を{CHECK_DAYS}日連続で下回りました！")
     else:
         print("条件はまだ満たされていません。")
