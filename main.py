@@ -33,7 +33,7 @@ def check_condition(kddi_close, kddi_ma50):
     return float(kddi_close) < float(kddi_ma50)
 
 def main():
-    # 使用例
+    # 使用例 test
     # send_imessage("+819032717248", "KDDIの株価が条件を満たしました！2")
     send_imessage("e.hirokatsu@icloud.com", "KDDIの株価が条件を満たしました！3")
 
