@@ -32,7 +32,7 @@ def analyze_stock(symbol, check_days=10, moving_avg_days=50):
 
     if stock_data.empty:
         print(f"{symbol} のデータが見つかりませんでした。")
-        return
+        return None
 
     # 50日移動平均線を計算
     stock_data['MA50'] = calculate_moving_average(stock_data, moving_avg_days)
@@ -71,20 +71,25 @@ def analyze_stock(symbol, check_days=10, moving_avg_days=50):
             break
 
     if is_condition_met:
-        message = f"{stock_name} ({symbol}) の株価が50日移動平均線を{check_days}日連続で下回りました！"
+        return f"{stock_name} ({symbol})"
+    return None
+
+def main(symbols):
+    """複数の銘柄を処理し、まとめて通知を送る"""
+    condition_met_stocks = []
+
+    for symbol in symbols:
+        result = analyze_stock(symbol)
+        if result:
+            condition_met_stocks.append(result)
+
+    if condition_met_stocks:
+        message = "以下の銘柄が50日移動平均線を10日連続で下回りました:\n" + "\n".join(condition_met_stocks)
         send_imessage("e.hirokatsu@icloud.com", message)
         print(message)
     else:
-        print(f"{stock_name} の条件はまだ満たされていません。")
-
-def main(symbols):
-    """複数の銘柄を処理"""
-    for symbol in symbols:
-        analyze_stock(symbol)
+        print("条件を満たす銘柄はありませんでした。")
 
 if __name__ == "__main__":
-    SYMBOLS = ["2169.T", "7820.T"]  # ここに複数の銘柄コードを指定
+    SYMBOLS = ["9433.T", "9433.T"]  # ここに複数の銘柄コードを指定
     main(SYMBOLS)
-
-
-# ログ出力　銘柄、移動平均日数指定の外部ファイル化
