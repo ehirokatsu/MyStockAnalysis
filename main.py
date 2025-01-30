@@ -83,13 +83,15 @@ def main(symbols):
         if result:
             condition_met_stocks.append(result)
 
+    today = dt.datetime.now().strftime("%Y-%m-%d")  # 今日の日付を取得
+
     if condition_met_stocks:
-        message = "以下の銘柄が50日移動平均線を10日連続で下回りました:\n" + "\n".join(condition_met_stocks)
+        message = f"{today} の分析結果\n以下の銘柄が50日移動平均線を10日連続で下回りました:\n" + "\n".join(condition_met_stocks)
         send_imessage("e.hirokatsu@icloud.com", message)
         print(message)
     else:
-        print("条件を満たす銘柄はありませんでした。")
+        print(f"{today}: 条件を満たす銘柄はありませんでした。")
 
 if __name__ == "__main__":
-    SYMBOLS = ["9433.T", "9433.T"]  # ここに複数の銘柄コードを指定
+    SYMBOLS = ["2169.T", "9433.T"]  # ここに複数の銘柄コードを指定
     main(SYMBOLS)
