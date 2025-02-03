@@ -37,6 +37,52 @@ def check_condition(close_price, moving_avg):
     """条件をチェック"""
     return float(close_price) < float(moving_avg)
 
+# 銘柄の日本語対応表
+STOCK_NAMES = {
+    "8306.T": "三菱UFJフィナンシャル・グループ",
+    "8316.T": "三井住友フィナンシャルグループ",
+    "5393.T": "ニチアス",
+    "6209.T": "オリエンタルチエン工業",
+    "8058.T": "三菱商事",
+    "8001.T": "伊藤忠商事",
+    "1655.T": "iシェアーズ S&P 500",
+    "5334.T": "日本特殊陶業",
+    "6345.T": "アイチコーポレーション",
+    "9436.T": "沖縄セルラー電話",
+    "7921.T": "宝印刷",
+    "6113.T": "アマダ",
+    "2003.T": "日東富士製粉",
+    "5110.T": "住友ゴム工業",
+    "1928.T": "積水ハウス",
+    "4220.T": "リケンテクノス",
+    "4762.T": "エックスネット",
+    "9986.T": "蔵王産業",
+    "7981.T": "タカラスタンダード",
+    "2163.T": "アルトナー",
+    "9433.T": "KDDI",
+    "1835.T": "東鉄工業",
+    "9600.T": "アイネット",
+    "9769.T": "学究社",
+    "9513.T": "電源開発（J-POWER）",
+    "9698.T": "クレオ",
+    "2914.T": "日本たばこ産業（JT）",
+    "7995.T": "バルカー",
+    "7483.T": "ドウシシャ",
+    "9303.T": "住友倉庫",
+    "8898.T": "センチュリー21・ジャパン",
+    "6073.T": "アサンテ",
+    "4521.T": "科研製薬",
+    "9880.T": "イノテック",
+    "3407.T": "旭化成",
+    "9381.T": "エーアイテイー",
+    "1489.T": "NEXT FUNDS 日経高配当50",
+    "8053.T": "住友商事",
+    "9432.T": "日本電信電話（NTT）",
+    "7811.T": "中本パックス",
+    "2169.T": "CDS",
+    "7820.T": "ニホンフラッシュ"
+}
+
 def analyze_stock(symbol, check_days=10, moving_avg_days=50):
     """1つの銘柄のデータを取得・分析"""
     end_date = dt.datetime.now()
@@ -53,12 +99,9 @@ def analyze_stock(symbol, check_days=10, moving_avg_days=50):
 
     stock_data['MA50'] = calculate_moving_average(stock_data, moving_avg_days)
 
-    try:
-        stock_name = stock.info.get('shortName', symbol)
-    except Exception:
-        stock_name = symbol
+    stock_name = STOCK_NAMES.get(symbol, symbol)
 
-    logging.info(f"{symbol} の最新データ:\n{stock_data.tail(3)}")
+    logging.info(f"{stock_name} ({symbol}) の最新データ:\n{stock_data.tail(3)}")
 
     is_condition_met = True
     for i in range(1, check_days + 1):
@@ -106,12 +149,5 @@ def main(symbols):
         logging.info(f"{today}: 条件を満たす銘柄はありませんでした。")
 
 if __name__ == "__main__":
-    SYMBOLS = [
-        "8306.T", "8316.T", "5393.T", "6209.T", "8058.T", "8001.T", "1655.T", "5334.T",
-        "6345.T", "9436.T", "7921.T", "6113.T", "2003.T", "5110.T", "1928.T", "4220.T",
-        "4762.T", "9986.T", "7981.T", "2163.T", "9433.T", "1835.T", "9600.T", "9769.T",
-        "9513.T", "9698.T", "2914.T", "7995.T", "7483.T", "9303.T", "8898.T", "6073.T",
-        "4521.T", "9880.T", "3407.T", "9381.T", "1489.T", "8053.T", "9432.T", "7811.T",
-        "2169.T", "7820.T"
-    ]
+    SYMBOLS = list(STOCK_NAMES.keys())  # 日本語名に対応した銘柄リストを使用
     main(SYMBOLS)
