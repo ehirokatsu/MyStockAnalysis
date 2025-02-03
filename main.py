@@ -4,11 +4,12 @@ import datetime as dt
 import os
 import logging
 
-# 日付を取得してログファイルのパスを設定
+# ログディレクトリ作成
 log_dir = "logs"
 if not os.path.exists(log_dir):
-    os.makedirs(log_dir)  # logsディレクトリがない場合は作成
+    os.makedirs(log_dir)
 
+# 日付を取得してログファイルのパスを設定
 today = dt.datetime.now().strftime("%Y-%m-%d")
 log_file = os.path.join(log_dir, f"{today}.log")
 
@@ -105,5 +106,12 @@ def main(symbols):
         logging.info(f"{today}: 条件を満たす銘柄はありませんでした。")
 
 if __name__ == "__main__":
-    SYMBOLS = ["2169.T", "9433.T"]
+    SYMBOLS = [
+        "8306.T", "8316.T", "5393.T", "6209.T", "8058.T", "8001.T", "1655.T", "5334.T",
+        "6345.T", "9436.T", "7921.T", "6113.T", "2003.T", "5110.T", "1928.T", "4220.T",
+        "4762.T", "9986.T", "7981.T", "2163.T", "9433.T", "1835.T", "9600.T", "9769.T",
+        "9513.T", "9698.T", "2914.T", "7995.T", "7483.T", "9303.T", "8898.T", "6073.T",
+        "4521.T", "9880.T", "3407.T", "9381.T", "1489.T", "8053.T", "9432.T", "7811.T",
+        "2169.T", "7820.T"
+    ]
     main(SYMBOLS)
